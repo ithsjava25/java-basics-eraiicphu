@@ -156,6 +156,7 @@ class MainTest {
 
         String output = bos.toString();
 
+        System.out.println("TESTAATEATST: " + output);
         // Expected sorted output (ascending by price)
         List<String> expectedOrder = List.of(
                 "01-02 10,00 öre",
