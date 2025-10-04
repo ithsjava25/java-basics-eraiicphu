@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         ElpriserAPI elpriserAPI = new ElpriserAPI();
 
-        String askedDatumInStringFormat = "2025-09-28";
+        String askedDatumInStringFormat = "2025-09-21";
         Prisklass priceClass = Prisklass.SE3;
         double meanPriceChosenDate = 0;
 
@@ -57,6 +57,31 @@ public class Main {
             }
 
         }
+
+        //Sliding window
+        double currentCheapestPrices = Double.MAX_VALUE;
+        double sumOfSlidingWindow = 0;
+        ZonedDateTime cheapestHours = null;
+        int sizeOfWindow = 8;
+
+        for (int i = 0; i < mergedList.size() - (sizeOfWindow - 1); i++) {
+            for(int j = 0; j < sizeOfWindow; j++) {
+                sumOfSlidingWindow += mergedList.get(i+j).sekPerKWh();
+            }
+
+            if(sumOfSlidingWindow < currentCheapestPrices) {
+                currentCheapestPrices = sumOfSlidingWindow;
+                cheapestHours = mergedList.get(i).timeStart();
+
+            }
+
+            sumOfSlidingWindow = 0;
+        }
+
+        System.out.println("Cheapest " + sizeOfWindow + " hours starts at: " + cheapestHours);
+
+
+
         System.out.println("Printing merged list" + mergedList);
         System.out.println(cheapestDailyPrice);
         System.out.println(mostExpensiveDailyPrice);
