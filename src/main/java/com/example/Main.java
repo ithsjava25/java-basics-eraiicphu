@@ -22,7 +22,7 @@ public class Main {
 
         LocalDate askedDatumInLocalDate = LocalDate.parse(askedDatumInStringFormat, DateTimeFormatter.ISO_LOCAL_DATE);
 
-        LocalDate tomorrowOfAskedDatum =  askedDatumInLocalDate.plusDays(1);
+        LocalDate tomorrowOfAskedDatum = askedDatumInLocalDate.plusDays(1);
 
         List<Elpris> mergedList = elpriserAPI.getPriser(askedDatumInLocalDate, priceClass);
         mergedList.addAll(elpriserAPI.getPriser(tomorrowOfAskedDatum, priceClass));
@@ -34,36 +34,33 @@ public class Main {
         for (Elpris elpris : priceForAskedDate) {
             meanPriceChosenDate += elpris.sekPerKWh();
         }
-        meanPriceChosenDate = meanPriceChosenDate/24;
+        meanPriceChosenDate = meanPriceChosenDate / 24;
         System.out.println("Mean price for chosen date is: " + meanPriceChosenDate);
 
         double cheapestDailyPrice = Double.MAX_VALUE;
 
         double mostExpensiveDailyPrice = Double.MIN_VALUE;
 
+        ZonedDateTime cheapestHourStart = null;
+        ZonedDateTime mostExpensiveHourStart = null;
         for (Elpris elpris : mergedList) {
             double price = elpris.sekPerKWh();
-            ZonedDateTime cheapestHourStart = elpris.timeStart();
-            ZonedDateTime mostExpensiveHourStart = elpris.timeStart();
+            ZonedDateTime time =elpris.timeStart();
 
-            if (price < cheapestDailyPrice){
+            if (price < cheapestDailyPrice) {
                 cheapestDailyPrice = price;
-                cheapestHourStart = elpris.timeStart();
+                cheapestHourStart = time;
             }
-            if (price > mostExpensiveDailyPrice){
+            if (price > mostExpensiveDailyPrice) {
                 mostExpensiveDailyPrice = price;
-                mostExpensiveHourStart = elpris.timeStart();
+                mostExpensiveHourStart = time;
             }
 
         }
         System.out.println("Printing merged list" + mergedList);
         System.out.println(cheapestDailyPrice);
         System.out.println(mostExpensiveDailyPrice);
-        System.out.println("cheapest hour: " + cheapestDailyPrice + " most expensive hour: " + mostExpensiveDailyPrice);
-
-
-
-
+        System.out.println("cheapest time: " + cheapestHourStart + " most expensive time: " + mostExpensiveHourStart);
 
     }
 }
