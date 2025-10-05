@@ -33,7 +33,7 @@ public class Main {
             try{
                 priceClass = Prisklass.valueOf(args[1]);
             } catch(IllegalArgumentException e){
-                System.out.println("invalid zone");
+                System.out.println("invalid zone: must be one of: SE1, SE2, SE3 or SE4.");
                 return;
             }
         }
@@ -93,7 +93,7 @@ public class Main {
             System.out.println("Påbörja laddning mellan kl " + cheapestHoursToCharge);
 
         } catch (DateTimeParseException e){
-            System.out.println("Invalid date");
+            System.out.println("Invalid date format: must be YYYY-MM-DD");
         }
     }
 
